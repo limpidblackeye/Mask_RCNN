@@ -55,7 +55,6 @@ def display_images(images, titles=None, cols=4, cmap=None, norm=None,
         i += 1
     plt.show()
 
-
 def random_colors(N, bright=True):
     """
     Generate random colors.

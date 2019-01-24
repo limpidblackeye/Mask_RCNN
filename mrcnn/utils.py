@@ -7,6 +7,10 @@ Licensed under the MIT License (see LICENSE for details)
 Written by Waleed Abdulla
 """
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import sys
 import os
 import math
@@ -17,10 +21,12 @@ import scipy
 import skimage.color
 import skimage.io
 import skimage.transform
-import urllib.request
+#import urllib.request
+import urllib
 import shutil
 import warnings
 from distutils.version import LooseVersion
+import re
 
 # URL from which to download the latest COCO trained weights
 COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5"
@@ -861,7 +867,7 @@ def norm_boxes(boxes, shape):
     """
     h, w = shape
     scale = np.array([h - 1, w - 1, h - 1, w - 1])
-    shift = np.array([0, 0, 1, 1])
+    shift = np.array([0.0, 0.0, 1.0, 1.0])
     return np.divide((boxes - shift), scale).astype(np.float32)
 
 
@@ -904,3 +910,10 @@ def resize(image, output_shape, order=1, mode='constant', cval=0, clip=True,
             image, output_shape,
             order=order, mode=mode, cval=cval, clip=clip,
             preserve_range=preserve_range)
+
+
+# Backport Python 3.4's regular expression "fullmatch()" to Python 2
+def fullmatch(regex, string, flags=0):
+    """Emulate python-3.4 re.fullmatch()."""
+    return re.match("(?:" + regex + r")\Z", string, flags=flags)
+
